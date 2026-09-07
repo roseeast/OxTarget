@@ -1,0 +1,11 @@
+{
+    "name": "OxTarget smoke test",
+    "announce": false,
+    "network": { "port": 7799 },
+    "pawn": {
+        "legacy_plugins": ["oxtarget"],
+        "main_scripts": ["oxtarget-smoke 1"],
+        "side_scripts": []
+    },
+    "rcon": { "enable": false, "password": "not-used-in-smoke-test" }
+}

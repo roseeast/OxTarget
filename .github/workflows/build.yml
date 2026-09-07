@@ -1,0 +1,71 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86
+            x86_option: ON
+            x64_option: OFF
+          - arch: x64
+            x86_option: OFF
+            x64_option: ON
+    runs-on: ubuntu-24.04
+    container: ubuntu:20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake git ca-certificates ${{ matrix.arch == 'x86' && 'g++-multilib' || '' }}
+      - name: Configure
+        run: >-
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          -DOXTARGET_BUILD_X86=${{ matrix.x86_option }}
+          -DOXTARGET_BUILD_X64=${{ matrix.x64_option }}
+      - name: Build and test
+        run: cmake --build build -j2 && cd build && ctest --output-on-failure
+      - name: Package
+        run: |
+          mkdir -p package/plugins package/pawno/include package/examples
+          cp build/oxtarget.so package/plugins/
+          cp include/oxtarget.inc package/pawno/include/
+          cp examples/*.pwn package/examples/
+          cp README.md LICENSE CHANGELOG.md package/
+          tar -C package -czf OxTarget-Linux-${{ matrix.arch }}.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OxTarget-Linux-${{ matrix.arch }}
+          path: OxTarget-Linux-${{ matrix.arch }}.tar.gz
+
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build -A Win32
+      - name: Build and test
+        shell: pwsh
+        run: |
+          cmake --build build --config Release --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build -C Release --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force package/plugins, package/pawno/include, package/examples
+          Copy-Item build/Release/oxtarget.dll package/plugins/
+          Copy-Item include/oxtarget.inc package/pawno/include/
+          Copy-Item examples/*.pwn package/examples/
+          Copy-Item README.md, LICENSE, CHANGELOG.md package/
+          Compress-Archive package/* OxTarget-Windows-x86.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OxTarget-Windows-x86
+          path: OxTarget-Windows-x86.zip

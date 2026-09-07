@@ -1,0 +1,9 @@
+/build*/
+/dist/
+/release/
+/Testing/
+*.amx
+*.pdb
+*.log
+.DS_Store
+

@@ -1,0 +1,7 @@
+EXPORTS
+    Supports=Supports@0
+    Load=Load@4
+    Unload=Unload@0
+    AmxLoad=AmxLoad@4
+    AmxUnload=AmxUnload@4
+    ProcessTick=ProcessTick@0
