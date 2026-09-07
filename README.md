@@ -4,6 +4,10 @@ OxTarget is a high-performance native C++17 targeting and interaction foundation
 
 No client-side mods (ASI, CLEO, MoonLoader, DirectX hooks, memory hacks, or custom APKs) are required. It works out-of-the-box on standard PC and Android mobile clients.
 
+<p align="center">
+  <img src="assets/preview.png" alt="OxTarget In-Game Preview" width="780">
+</p>
+
 ---
 
 ## Table of Contents

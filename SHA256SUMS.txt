@@ -1,0 +1,4 @@
+2f76f022408469d92ec1a754c9be5cb51265ede9168d6abae5eab98d818817d3  OxTarget-v1.0.0-Linux-x64.tar.gz
+6d51c04a3af37a9c97e9914bbee910d8fb0e06a6ab8bc8dc0f382cc639347661  OxTarget-v1.0.0-Linux-x86.tar.gz
+70f7053fe0c3a8c121b4ebebefddcc946c3d46094e4b2e5d929d0eacc8bb8afe  OxTarget-v1.0.0-Windows-x64.zip
+cd3d86b1d48ee471a3beaf4b8fa9f3a57731bca435eade12b3c81e0211fcc06f  OxTarget-v1.0.0-Windows-x86.zip
